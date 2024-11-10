@@ -19,20 +19,34 @@ const CreateListingScreen = () => {
             return;
         }
 
+        // Convert condition to a number
+        const conditionValue = parseInt(condition, 10);
+        if (isNaN(conditionValue) || conditionValue < 1 || conditionValue > 10) {
+            Alert.alert('Error', 'Please enter a valid condition (1-10).');
+            return;
+        }
+
+        // Convert price to a number
+        const priceValue = parseFloat(price);
+        if (isNaN(priceValue)) {
+            Alert.alert('Error', 'Please enter a valid price.');
+            return;
+        }
+
         // Prepare the data
         const listingData = {
             title,
             author,
             course_number: courseNumber,
-            condition,
-            price,
+            condition: conditionValue,  // Use the numeric value for condition
+            price: priceValue,          // Use the numeric value for price
             other_desired_titles: otherDesiredTitles,
             user_email: userEmail
         };
 
         try {
             // Send the POST request to the backend
-            const response = await axios.post('http://localhost:5000/create_listing', listingData);
+            const response = await axios.post('http://localhost:8000/create_listing', listingData);
             if (response.status === 201) {
                 Alert.alert('Success', 'Listing created successfully!');
                 // Clear fields after successful submission
