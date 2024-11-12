@@ -43,7 +43,7 @@ def register_user():
         # Send verification email
         send_verification_email(email, verification_link)
 
-        # Save user data to Firestore
+        # Save user data to Firestore (store email as a simple string)
         user_data = {
             'email': email,
             'password': hashed_password,
@@ -124,6 +124,7 @@ def user_login():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Function to create textbook listing
 @app.route('/create_listing', methods=['POST'])
 def create_listing():
     data = request.get_json()
@@ -131,7 +132,7 @@ def create_listing():
     author = data.get('author')
     course_number = data.get('course_number')
     condition = data.get('condition')
-    price = data.get('price')
+    price = data.get('price')  # This should already be a float
     other_desired_titles = data.get('other_desired_titles')
     user_email = data.get('user_email')  # Assume this comes from the request
     
@@ -139,15 +140,21 @@ def create_listing():
     if not title or not author or not course_number or not condition or not price or not user_email:
         return jsonify({'error': 'All fields are required'}), 400
 
-    # Prepare listing data
+    # Ensure price is a float
+    try:
+        price = float(price)  # Convert price to float
+    except ValueError:
+        return jsonify({'error': 'Price must be a valid number'}), 400
+
+    # Prepare listing data (store user_email as a string)
     listing_data = {
         'title': title,
         'author': author,
         'course_number': course_number,
         'condition': condition,
-        'price': price,
+        'price': price,  # Store price as a float
         'other_desired_titles': other_desired_titles,
-        'user_email': user_email,
+        'user_email': user_email,  # Store as string
     }
 
     try:
@@ -157,6 +164,60 @@ def create_listing():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+
+@app.route('/search_listings', methods=['GET'])
+def search_listings():
+    course_number = request.args.get('course_number')
+    title = request.args.get('title')
+    min_price = request.args.get('min_price', type=float)
+    max_price = request.args.get('max_price', type=float)
+
+    # Start a query to fetch listings
+    query = db.collection('listings')
+
+    if course_number:
+        query = query.where('course_number', '==', course_number)
+    if title:
+        query = query.where('title', '==', title)
+    if min_price is not None and max_price is not None:
+        query = query.where('price', '>=', min_price).where('price', '<=', max_price)
+    elif min_price is not None:
+        query = query.where('price', '>=', min_price)
+    elif max_price is not None:
+        query = query.where('price', '<=', max_price)
+
+    try:
+        results = query.stream()
+        listings = []
+        for listing in results:
+            listings.append(listing.to_dict())
+        
+        return jsonify(listings), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+
+@app.route('/user_listings', methods=['GET'])
+def get_user_listings():
+    user_email = request.args.get('user_email')
+    print(user_email)
+    if not user_email:
+        return jsonify({'error': 'User email is required'}), 400
+
+    try:
+        # Query Firestore for listings associated with the user's email
+        user_listings = db.collection('listings').where('user_email.userEmail', '==', user_email).stream()
+        listings = []
+        for listing in user_listings:
+            listings.append(listing.to_dict())
+
+        return jsonify({"listings": listings}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 
 if __name__ == '__main__':

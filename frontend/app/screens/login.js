@@ -7,7 +7,7 @@ const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { setUser } = useUser();
+    const { setUserEmail } = useUser();  // use setUserEmail instead of setUser
 
     const handleLogin = async () => {
         try {
@@ -16,7 +16,7 @@ const LoginScreen = ({ navigation }) => {
                 password: password,
             });
             // Set the user’s email in context after successful login
-            setUser({ email });
+            setUserEmail(email);
             setError('');
             navigation.navigate('Dashboard'); // Navigate to the Dashboard
         } catch (error) {

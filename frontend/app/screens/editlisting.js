@@ -19,13 +19,20 @@ const CreateListingScreen = () => {
             return;
         }
 
+        // Validate price input is a valid number
+        const priceFloat = parseFloat(price);
+        if (isNaN(priceFloat) || priceFloat <= 0) {
+            Alert.alert('Error', 'Please enter a valid price.');
+            return;
+        }
+
         // Prepare the data
         const listingData = {
             title,
             author,
             course_number: courseNumber,
             condition,
-            price,
+            price: priceFloat, // Ensure price is sent as a float
             other_desired_titles: otherDesiredTitles,
             user_email: userEmail
         };
@@ -72,7 +79,7 @@ const CreateListingScreen = () => {
                 style={styles.input}
                 value={courseNumber}
                 onChangeText={setCourseNumber}
-                placeholder="Enter course number"
+                placeholder="Enter course number (EX: CEN3031)"
             />
 
             <Text style={styles.label}>Condition (1-10)</Text>

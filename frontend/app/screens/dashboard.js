@@ -29,7 +29,7 @@ const DashboardScreen = ({ navigation }) => {
                     <Menu.Item
                         onPress={() => {
                             closeMenu();
-                            navigation.navigate('ManageListings');
+                            navigation.navigate('Manage Listings');
                         }}
                         title="Manage Listings"
                     />
@@ -40,7 +40,7 @@ const DashboardScreen = ({ navigation }) => {
                 <View style={styles.buttonContainer}>
                     <Button
                         title="Search Listings"
-                        onPress={() => navigation.navigate('SearchListings')}
+                        onPress={() => navigation.navigate('Search Listing')}
                     />
                 </View>
                 <View style={styles.buttonContainer}>
