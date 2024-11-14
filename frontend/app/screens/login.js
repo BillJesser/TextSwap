@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
       color: '#ffffff', // White text color
     },
     input: {
-      width: '30%',
+      width: '20%',
       height: 40,
       borderColor: '#ccc',
       borderWidth: 1,
