@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
+import ip from './config';
 
-const SearchPage = () => {
+const SearchPage = ({ navigation }) => {  // Destructure navigation here
     const [courseNumber, setCourseNumber] = useState('');
     const [title, setTitle] = useState('');
     const [minPrice, setMinPrice] = useState('');
@@ -13,7 +14,7 @@ const SearchPage = () => {
     useEffect(() => {
         const fetchAllListings = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/search_listings');
+                const response = await axios.get(`http://${ip}:5000/search_listings`);
                 setListings(response.data);
             } catch (error) {
                 console.error('Error fetching listings:', error);
@@ -25,7 +26,7 @@ const SearchPage = () => {
 
     const searchListings = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/search_listings', {
+            const response = await axios.get(`http://${ip}:5000/search_listings`, {
                 params: {
                     course_number: courseNumber,
                     title: title,
@@ -40,7 +41,7 @@ const SearchPage = () => {
     };
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.listingItem} onPress={() => {/* navigate to detailed view */}}>
+        <TouchableOpacity style={styles.listingItem} onPress={() => navigation.navigate('Listing Details', { listing: item })}>
             <Text>{item.title}</Text>
             <Text>{item.author}</Text>
             <Text>{item.course_number}</Text>

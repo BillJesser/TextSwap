@@ -46,7 +46,7 @@ const DashboardScreen = ({ navigation }) => {
                 <View style={styles.buttonContainer}>
                     <Button
                         title="Create New Listing"
-                        onPress={() => navigation.navigate('Edit Listing')}
+                        onPress={() => navigation.navigate('Create Listing')}
                     />
                 </View>
             </View>

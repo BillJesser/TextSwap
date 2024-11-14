@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { useUser } from './UserContext';
+import ip from './config';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ const LoginScreen = ({ navigation }) => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/login', {
+            const response = await axios.post(`http://${ip}:5000/login`, {
                 email: email,
                 password: password,
             });

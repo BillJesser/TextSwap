@@ -1,32 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, Alert, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { useUser } from './UserContext';
+import ip from './config';
 
-const MyListingsScreen = () => {
+const MyListingsScreen = ({ navigation }) => {
     const [listings, setListings] = useState([]);
-    const { userEmail } = useUser();  // Get userEmail from context
+    const { userEmail } = useUser();
+
+    const fetchUserListings = async () => {
+        try {
+            const response = await axios.get(`http://${ip}:5000/user_listings`, {
+                params: { user_email: userEmail },
+            });
+            if (response.status === 200) {
+                setListings(response.data.listings);
+            }
+        } catch (error) {
+            console.error("Failed to fetch user listings:", error);
+        }
+    };
 
     useEffect(() => {
-        const fetchUserListings = async () => {
-            try {
-                if (userEmail) {
-                    const response = await axios.get(`http://localhost:5000/user_listings`, {
-                        params: { user_email: userEmail }
-                    });
-                    if (response.status === 200) {
-                        setListings(response.data.listings);
-                    }
-                } else {
-                    console.log("userEmail is null or undefined");
-                }
-            } catch (error) {
-                console.error("Failed to fetch user listings:", error);
-            }
-        };
-
         fetchUserListings();
     }, [userEmail]);
+
+    const handleDelete = async (listingId) => {
+        Alert.alert(
+            "Confirm Delete",
+            "Are you sure you want to delete this listing?",
+            [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Delete",
+                    onPress: async () => {
+                        try {
+                            await axios.delete(`http://${ip}:5000/delete_listing/${listingId}`);
+                            setListings((prevListings) =>
+                                prevListings.filter((item) => item.id !== listingId)
+                            );
+                        } catch (error) {
+                            console.error("Failed to delete listing:", error);
+                        }
+                    },
+                    style: "destructive",
+                },
+            ],
+            { cancelable: true }
+        );
+    };
+
+    const handleEdit = (listing) => {
+        navigation.navigate("Edit Listing", {
+            listing,
+            refreshListings: fetchUserListings, // Pass the refresh function
+        });
+    };
 
     const renderListing = ({ item }) => (
         <View style={styles.listingContainer}>
@@ -34,6 +63,10 @@ const MyListingsScreen = () => {
             <Text>Author: {item.author}</Text>
             <Text>Course Number: {item.course_number}</Text>
             <Text>Price: ${item.price.toFixed(2)}</Text>
+            <View style={styles.buttonContainer}>
+                <Button title="Edit" onPress={() => handleEdit(item)} />
+                <Button title="Delete" onPress={() => handleDelete(item.id)} color="red" />
+            </View>
         </View>
     );
 
@@ -43,7 +76,7 @@ const MyListingsScreen = () => {
             <FlatList
                 data={listings}
                 renderItem={renderListing}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item) => item.id}
                 ListEmptyComponent={<Text>No listings found.</Text>}
             />
         </View>
@@ -54,22 +87,27 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#fff',
+        backgroundColor: "#fff",
     },
     header: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontWeight: "bold",
         marginBottom: 15,
     },
     listingContainer: {
         padding: 15,
         borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        borderBottomColor: "#ccc",
         marginBottom: 10,
     },
     title: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: "bold",
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 10,
     },
 });
 

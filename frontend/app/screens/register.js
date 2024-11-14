@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
+import ip from './config';
 
 const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ const RegisterScreen = ({ navigation }) => {
 
     const handleRegister = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/register', {
+            const response = await axios.post(`http://${ip}:5000/register`, {
                 email,
                 password,
                 name,

@@ -202,23 +202,43 @@ def search_listings():
 @app.route('/user_listings', methods=['GET'])
 def get_user_listings():
     user_email = request.args.get('user_email')
-    print(user_email)
-    if not user_email:
-        return jsonify({'error': 'User email is required'}), 400
-
+    
     try:
-        # Query Firestore for listings associated with the user's email
-        user_listings = db.collection('listings').where('user_email.userEmail', '==', user_email).stream()
+        # Query Firestore for listings with the specified user email
+        listings_ref = db.collection('listings').where('user_email.userEmail', '==', user_email)
         listings = []
-        for listing in user_listings:
-            listings.append(listing.to_dict())
-
-        return jsonify({"listings": listings}), 200
-
+        
+        for doc in listings_ref.stream():
+            listing_data = doc.to_dict()
+            listing_data['id'] = doc.id  # Attach document ID to each listing
+            listings.append(listing_data)
+        
+        return jsonify({'listings': listings}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
+# Update listing endpoint
+@app.route('/update_listing/<string:listing_id>', methods=['POST'])
+def update_listing(listing_id):
+    data = request.get_json()
+    try:
+        # Update the listing in Firestore with new data
+        db.collection('listings').document(listing_id).update(data)
+        return jsonify({"message": "Listing updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Delete listing endpoint
+@app.route('/delete_listing/<string:listing_id>', methods=['DELETE'])
+def delete_listing(listing_id):
+    try:
+        # Delete the listing document from Firestore
+        db.collection('listings').document(listing_id).delete()
+        return jsonify({"message": "Listing deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
