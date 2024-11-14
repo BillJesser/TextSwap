@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate('./backend/credentials/textswapfinal-firebase-adminsdk-v2sag-561a397a16.json')
+cred = credentials.Certificate('./credentials/textswapfinal-firebase-adminsdk-v2sag-561a397a16.json')
 firebase_admin.initialize_app(cred)
 
 # Initialize Firestore client
