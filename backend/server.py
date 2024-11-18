@@ -2,13 +2,13 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import firebase_admin
 from firebase_admin import credentials, auth, firestore
 import bcrypt
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate('./credentials/textswapfinal-firebase-adminsdk-v2sag-561a397a16.json')
@@ -19,6 +19,7 @@ db = firestore.client()
 
 # Function to register a new user
 @app.route('/register', methods=['POST'])
+@cross_origin()
 def register_user():
     data = request.get_json()
     email = data.get('email')
@@ -88,6 +89,7 @@ def send_verification_email(email, verification_link):
 
 # Function to login a user
 @app.route('/login', methods=['POST'])
+@cross_origin()
 def user_login():
     data = request.get_json()
     email = data.get('email')
@@ -126,6 +128,7 @@ def user_login():
 
 # Function to create textbook listing
 @app.route('/create_listing', methods=['POST'])
+@cross_origin()
 def create_listing():
     data = request.get_json()
     title = data.get('title')
@@ -167,6 +170,7 @@ def create_listing():
     
 
 @app.route('/search_listings', methods=['GET'])
+@cross_origin()
 def search_listings():
     course_number = request.args.get('course_number')
     title = request.args.get('title')
@@ -200,6 +204,7 @@ def search_listings():
     
 
 @app.route('/user_listings', methods=['GET'])
+@cross_origin()
 def get_user_listings():
     user_email = request.args.get('user_email')
     
@@ -220,6 +225,7 @@ def get_user_listings():
 
 # Update listing endpoint
 @app.route('/update_listing/<string:listing_id>', methods=['POST'])
+@cross_origin()
 def update_listing(listing_id):
     data = request.get_json()
     try:
@@ -232,6 +238,7 @@ def update_listing(listing_id):
 
 # Delete listing endpoint
 @app.route('/delete_listing/<string:listing_id>', methods=['DELETE'])
+@cross_origin()
 def delete_listing(listing_id):
     try:
         # Delete the listing document from Firestore

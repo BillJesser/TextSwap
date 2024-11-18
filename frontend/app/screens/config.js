@@ -1,4 +1,4 @@
 // config.js
-const ip = '10.138.236.129'; // Replace with your desired IP address
+const ip = '127.0.0.1'; // Replace with your desired IP address
 
 export default ip;
