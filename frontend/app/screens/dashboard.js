@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { Menu, Provider, Appbar } from 'react-native-paper';
+import Image from 'react-native';
+import logo from '../../assets/images/logo.png';
 
 const DashboardScreen = ({ navigation }) => {
     const [menuVisible, setMenuVisible] = useState(false);
@@ -9,9 +11,9 @@ const DashboardScreen = ({ navigation }) => {
     const closeMenu = () => setMenuVisible(false);
 
     return (
+        
         <Provider>
-            <Appbar.Header>
-                <Appbar.Content title="Dashboard" />
+            
                 <Menu
                     visible={menuVisible}
                     onDismiss={closeMenu}
@@ -34,9 +36,9 @@ const DashboardScreen = ({ navigation }) => {
                         title="Manage Listings"
                     />
                 </Menu>
-            </Appbar.Header>
+   
             <View style={styles.container}>
-                <Text style={styles.title}>Dashboard</Text>
+                <Text style={styles.title}>Welcome to the Dashboard</Text>
                 <View style={styles.buttonContainer}>
                     <Button
                         title="Search Listings"
@@ -54,21 +56,32 @@ const DashboardScreen = ({ navigation }) => {
     );
 };
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#050a30',
+    },
+    logo: {
+        width: 250,
+        height: 250,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 16,
     },
     title: {
         fontSize: 24,
-        marginBottom: 20,
+        marginBottom: 40,
         textAlign: 'center',
+        color: '#ffffff',
     },
     buttonContainer: {
-        width: '80%',
+        borderRadius: 5,
+        width: '50%',
         marginVertical: 10,
+        backgroundColor: '#ffffff',
+        color: '#050a30',
     },
 });
 

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { useUser } from './UserContext';
 import ip from './config';
+import { Image } from 'react-native';
+import logo from '../../assets/images/logo.png';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -27,6 +29,7 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <Image source={logo} style={styles.logo} />
             <Text style={styles.title}>Login</Text>
             <TextInput
                 style={styles.input}
@@ -51,35 +54,60 @@ const LoginScreen = ({ navigation }) => {
         </View>
     );
 };
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        justifyContent: 'center',
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 16,
-        textAlign: 'center',
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 12,
-        paddingHorizontal: 8,
-    },
-    error: {
-        color: 'red',
-        marginBottom: 12,
-        textAlign: 'center',
-    },
-    link: {
-        color: 'blue',
-        marginTop: 12,
-        textAlign: 'center',
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#050a30', // Navy blue background
+  },
+  logo: {
+      width: 250,
+      height: 250,
+      justifyContent: 'center',
+      alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#fff', // White text color
+  },
+  input: {
+    width: '30%',
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    color: '#000', // Black text color
+  },
+  button: {
+    width: '100%',
+    padding: 15,
+    marginVertical: 10,
+    backgroundColor: '#007BFF',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff', // White text color
+    fontSize: 16,
+  },
+  error: {
+    color: 'red',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  link: {
+    color: '#00BFFF', // Light blue text color
+    marginTop: 12,
+    textAlign: 'center',
+  },
 });
+
 
 export default LoginScreen;

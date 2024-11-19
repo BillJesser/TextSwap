@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import ip from './config';
+import { Image } from 'react-native';
+import logo from '../../assets/images/logo.png';
 
 const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -33,6 +35,7 @@ const RegisterScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <Image source={logo} style={styles.logo} />
             <Text style={styles.title}>Register</Text>
             <TextInput
                 style={styles.input}
@@ -74,35 +77,66 @@ const RegisterScreen = ({ navigation }) => {
         </View>
     );
 };
-
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
-        padding: 16,
         justifyContent: 'center',
+        alignItems: 'center',
+        padding: 16,
+        backgroundColor: '#050a30', // Navy blue background
+    },
+    logo: {
+        width: 250,
+        height: 250,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     title: {
         fontSize: 24,
-        marginBottom: 16,
-        textAlign: 'center',
+        fontWeight: 'bold',
+        marginBottom: 15,
+        color: '#ffffff', // Change this to your desired color (e.g., Tomato)
     },
     input: {
+        width: '30%', // Smaller width
         height: 40,
-        borderColor: 'gray',
+        borderColor: '#ccc',
         borderWidth: 1,
         marginBottom: 12,
         paddingHorizontal: 8,
+        borderRadius: 5,
+        backgroundColor: '#fff',
+        color: '#000', // Black text color
     },
-    error: {
-        color: 'red',
-        marginBottom: 12,
-        textAlign: 'center',
+    button: {
+        width: '30%', // Match button width to input width
+        padding: 15,
+        marginVertical: 10,
+        backgroundColor: '#007BFF',
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#fff', // White text color
+        fontSize: 16,
     },
     success: {
         color: 'green',
         marginBottom: 12,
         textAlign: 'center',
     },
+    error: {
+        color: 'red',
+        marginBottom: 12,
+        textAlign: 'center',
+    },
+    link: {
+        color: '#00BFFF', // Light blue text color
+        marginTop: 12,
+        textAlign: 'center',
+    },
 });
+
 
 export default RegisterScreen;

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import axios from 'axios';
 import ip from './config';
+import logo from '../../assets/images/logo.png';
 
 const SearchPage = ({ navigation }) => {  // Destructure navigation here
     const [courseNumber, setCourseNumber] = useState('');
@@ -50,59 +51,106 @@ const SearchPage = ({ navigation }) => {  // Destructure navigation here
     );
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                placeholder="Course Number"
-                value={courseNumber}
-                onChangeText={setCourseNumber}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Title"
-                value={title}
-                onChangeText={setTitle}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Min Price"
-                value={minPrice}
-                keyboardType="numeric"
-                onChangeText={setMinPrice}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Max Price"
-                value={maxPrice}
-                keyboardType="numeric"
-                onChangeText={setMaxPrice}
-            />
-            <Button title="Search" onPress={searchListings} />
-            <FlatList
-                data={listings}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={renderItem}
-                ListEmptyComponent={<Text>No listings found.</Text>}
-            />
-        </View>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <View style={styles.container}>
+                <Image source={logo} style={styles.logo} />
+                <Text style={styles.title}>Search Listings</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Course Number"
+                    value={courseNumber}
+                    onChangeText={setCourseNumber}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Title"
+                    value={title}
+                    onChangeText={setTitle}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Min Price"
+                    value={minPrice}
+                    keyboardType="numeric"
+                    onChangeText={setMinPrice}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Max Price"
+                    value={maxPrice}
+                    keyboardType="numeric"
+                    onChangeText={setMaxPrice}
+                />
+                <View style={styles.buttonContainer}>
+                    <Button title="Search" onPress={searchListings} color="#050a30" />
+                </View>            
+                <FlatList
+                    data={listings}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={renderItem}
+                    ListEmptyComponent={<Text>No listings found.</Text>}
+                    horizontal={true} // Display items horizontally
+                    showsHorizontalScrollIndicator={true} // Hide horizontal scroll indicator
+                />
+            </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
+
     container: {
-        padding: 16,
+        flex: 2,
+        padding: 15,
+        backgroundColor: '#050a30',
+        justifyContent: 'flex-start', // Align items to the top
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#fff',
+        marginBottom: 20, // Space between title and inputs
     },
     input: {
+        width: '40%', // Smaller width
         height: 40,
-        borderColor: 'gray',
+        borderColor: '#ccc',
         borderWidth: 1,
-        marginBottom: 10,
-        paddingLeft: 8,
+        marginBottom: 12,
+        paddingHorizontal: 8,
+        borderRadius: 5,
+        backgroundColor: '#fff',
+        color: '#000', // Black text color
+
+    },
+    buttonContainer: {
+        width: '20%', // Adjusted width for the button
+        marginTop: 15,
+        backgroundColor: '#cae8ff',
+        borderRadius: 5,
     },
     listingItem: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderColor: '#ddd',
+        width: 190, // Adjusted width for horizontal appearance
+        height: 100, // Minimum height to fit text
+        borderColor: '#ccc',
+        borderWidth: 1,
+        marginBottom: 12,
+        marginRight: 12, // Add margin to the right for spacing
+        marginTop: 100,
+        paddingHorizontal: 8,
+        paddingVertical: 10, // Vertical padding to fit text
+        borderRadius: 5,
+        backgroundColor: '#fff',
+        color: '#000', // Black text color
+        justifyContent: 'center', // Center text vertically
+        alignItems: 'center', // Center text horizontally
+    },
+    logo: {
+        width: 250,
+        height: 250,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
