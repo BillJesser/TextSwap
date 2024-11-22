@@ -10,7 +10,7 @@ import UserListings from './screens/userlistings';
 import EditListing from './screens/editlisting';
 import ViewListing from './screens/viewlisting'
 import { UserProvider } from './screens/UserContext';
-
+import Profile from './screens/Profile';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -24,6 +24,7 @@ export default function App() {
                     <Stack.Screen name="Create Listing" component={CreateListingScreen} />
                     <Stack.Screen name="Search Listing" component={SearchListingScreen} />
                     <Stack.Screen name="Manage Listings" component={UserListings} />
+                    <Stack.Screen name="Manage Profile" component={Profile} />
                     <Stack.Screen name="Edit Listing" component={EditListing} />
                     <Stack.Screen name="Listing Details" component={ViewListing} />
                 </Stack.Navigator>

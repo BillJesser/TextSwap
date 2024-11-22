@@ -24,7 +24,7 @@ const DashboardScreen = ({ navigation }) => {
                     <Menu.Item
                         onPress={() => {
                             closeMenu();
-                            navigation.navigate('ManageProfile');
+                            navigation.navigate('Manage Profile');
                         }}
                         title="Manage Profile"
                     />
