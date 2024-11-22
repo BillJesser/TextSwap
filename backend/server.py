@@ -203,6 +203,27 @@ def search_listings():
         return jsonify({'error': str(e)}), 500
     
 
+
+ 
+    try:
+        users_ref = db.collection('users')
+        user_query = users_ref.where('email', '==', email).limit(1).get()
+
+        if not user_query:
+            return jsonify({'error': 'User not found'}), 404
+
+        user_doc = user_query[0]
+
+        # Update the specified field with the new value
+        user_doc.reference.update({
+            field: value
+        })
+        
+        return jsonify({"message": "Profile updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route('/user_listings', methods=['GET'])
 @cross_origin()
 def get_user_listings():
@@ -246,6 +267,103 @@ def delete_listing(listing_id):
         return jsonify({"message": "Listing deleted successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/update_profile', methods=['POST'])
+@cross_origin()
+def update_profile():
+    
+    data = request.get_json()
+    email = data.get('email')
+    field = data.get('field')
+    value = data.get('value')
+    print(email, field, value)
+
+    if not email or not field or value is None:
+        return jsonify({'error': 'Email, field, and value are required'}), 400
+
+    try:
+        users_ref = db.collection('users')
+        # Query the collection to find the document with the matching email
+        user_query = users_ref.where('email', '==', email).limit(1).get()
+
+        if not user_query:
+            return jsonify({'error': 'User not found'}), 404
+
+        user_doc = user_query[0]
+
+        # Update the specified field with the new value
+        user_doc.reference.update({
+            field: value
+        })
+        
+        return jsonify({"message": "Profile updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+@app.route('/user', methods=['GET'])
+@cross_origin()
+def get_user_by_email():
+    email = request.args.get('email')
+    print(f"Received request for email: {email}")
+    
+    if not email:
+        return jsonify({'error': 'Email is required'}), 400
+
+    try:
+        # Query Firestore for the user with the specified email
+        users_ref = db.collection('users')
+        user_query = users_ref.where('email', '==', email).limit(1).get()
+
+        if not user_query:
+            print("User not found in Firestore")
+            return jsonify({'error': 'User not found'}), 404
+
+        user_doc = user_query[0]
+        user_data = user_doc.to_dict()
+
+        # Extract the name and university from the user data
+        name = user_data.get('name')
+        university = user_data.get('university')
+
+        return jsonify({'name': name, 'university': university}), 200
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/change_password', methods=['POST'])
+@cross_origin()
+def change_password():
+    data = request.get_json()
+    email = data.get('email')
+    new_password = data.get('new_password')
+
+    if not email or not new_password:
+        return jsonify({'error': 'Email and new password are required'}), 400
+
+    try:
+        # Retrieve user by email from Firebase Auth
+        user = auth.get_user_by_email(email)
+
+        # Retrieve user data from Firestore
+        user_ref = db.collection('users').document(user.uid).get()
+        if not user_ref.exists:
+            return jsonify({'error': 'User not found'}), 404
+
+        # Hash the new password
+        new_hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+
+        # Update the password in Firestore
+        user_ref.reference.update({
+            'password': new_hashed_password
+        })
+
+        return jsonify({"message": "Password updated successfully"}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
