@@ -87,18 +87,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: "#fff",
+        backgroundColor: "#050a30",
+
     },
     header: {
         fontSize: 20,
         fontWeight: "bold",
         marginBottom: 15,
+        color: "#fff",
     },
     listingContainer: {
         padding: 15,
         borderBottomWidth: 1,
         borderBottomColor: "#ccc",
         marginBottom: 10,
+        backgroundColor: "#fff",
+        borderRadius: 5,
     },
     title: {
         fontSize: 16,

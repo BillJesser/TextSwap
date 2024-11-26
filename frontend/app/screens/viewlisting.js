@@ -19,9 +19,24 @@ const ListingDetailsScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16 },
-    header: { fontSize: 24, marginBottom: 16, textAlign: 'center' },
-    label: { fontSize: 18, marginBottom: 8 },
+    container: { 
+        flex: 1, 
+        padding: 16,
+        backgroundColor: '#050a30' 
+
+    },
+    header: { fontSize: 24, 
+        marginBottom: 16, 
+        textAlign: 'center', 
+        color: '#ffffff'
+
+    },
+    label: { 
+        fontSize: 18, 
+        marginBottom: 8,
+        color: '#ffffff', 
+       
+    },
 });
 
 export default ListingDetailsScreen;

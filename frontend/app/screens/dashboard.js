@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import { Menu, Provider, Appbar } from 'react-native-paper';
-import Image from 'react-native';
 import logo from '../../assets/images/logo.png';
 
 const DashboardScreen = ({ navigation }) => {
@@ -36,8 +35,9 @@ const DashboardScreen = ({ navigation }) => {
                         title="Manage Listings"
                     />
                 </Menu>
-   
+            
             <View style={styles.container}>
+                <Image source={logo} style={styles.logo} />
                 <Text style={styles.title}>Welcome to the Dashboard</Text>
                 <View style={styles.buttonContainer}>
                     <Button
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
         height: 250,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: -50,
     },
     title: {
         fontSize: 24,

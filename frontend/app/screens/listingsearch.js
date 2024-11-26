@@ -43,15 +43,14 @@ const SearchPage = ({ navigation }) => {  // Destructure navigation here
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.listingItem} onPress={() => navigation.navigate('Listing Details', { listing: item })}>
-            <Text>{item.title}</Text>
-            <Text>{item.author}</Text>
-            <Text>{item.course_number}</Text>
-            <Text>${item.price}</Text>
+            <Text style={{ color: '#fff' }}>{item.title}</Text>
+            <Text style={{ color: '#fff' }}>{item.author}</Text>
+            <Text style={{ color: '#fff' }}>{item.course_number}</Text>
+            <Text style={{ color: '#fff' }}>${item.price}</Text>
         </TouchableOpacity>
     );
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.container}>
                 <Image source={logo} style={styles.logo} />
                 <Text style={styles.title}>Search Listings</Text>
@@ -82,18 +81,21 @@ const SearchPage = ({ navigation }) => {  // Destructure navigation here
                     onChangeText={setMaxPrice}
                 />
                 <View style={styles.buttonContainer}>
-                    <Button title="Search" onPress={searchListings} color="#050a30" />
-                </View>            
-                <FlatList
-                    data={listings}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={renderItem}
-                    ListEmptyComponent={<Text>No listings found.</Text>}
-                    horizontal={true} // Display items horizontally
-                    showsHorizontalScrollIndicator={true} // Hide horizontal scroll indicator
-                />
+                    <Button title="Search" onPress={searchListings} backgroundColor="blue" />
+                </View>
+                <View style={styles.flatListContainer}>
+                    <FlatList
+                        data={listings}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={renderItem}
+                        ListEmptyComponent={<Text>No listings found.</Text>}
+                        horizontal={true} // Display items horizontally
+                        showsHorizontalScrollIndicator={true} // Show horizontal scroll indicator
+                        scrollEnabled={true} // Enable scrolling
+                        contentContainerStyle={{ paddingHorizontal: 10 }} // Add padding if needed
+                    />
+                </View>
             </View>
-        </ScrollView>
     );
 };
 
@@ -105,6 +107,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#050a30',
         justifyContent: 'flex-start', // Align items to the top
         alignItems: 'center',
+    },
+    flatListContainer: {
+        marginTop: 30,
+        backgroundColor: '#cae8ff', 
+        padding: 10,
+        height: 140, 
+        width: '100%',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        
     },
     title: {
         fontSize: 24,
@@ -127,7 +140,8 @@ const styles = StyleSheet.create({
     buttonContainer: {
         width: '20%', // Adjusted width for the button
         marginTop: 15,
-        backgroundColor: '#cae8ff',
+        backgroundColor: '#050a30',
+        color: '#050a30',
         borderRadius: 5,
     },
     listingItem: {
@@ -137,12 +151,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginBottom: 12,
         marginRight: 12, // Add margin to the right for spacing
-        marginTop: 100,
+        marginTop: 10,
         paddingHorizontal: 8,
         paddingVertical: 10, // Vertical padding to fit text
         borderRadius: 5,
-        backgroundColor: '#fff',
-        color: '#000', // Black text color
+        backgroundColor: '#050a30',
         justifyContent: 'center', // Center text vertically
         alignItems: 'center', // Center text horizontally
     },

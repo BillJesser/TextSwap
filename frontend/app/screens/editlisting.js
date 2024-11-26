@@ -77,9 +77,25 @@ const EditListingScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16 },
-    header: { fontSize: 24, marginBottom: 16, textAlign: 'center' },
-    input: { height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingLeft: 8 },
+    container: { 
+        flex: 1, 
+        padding: 16, 
+        backgroundColor: '#050a30'
+    },
+    header: { 
+        fontSize: 24, 
+        marginBottom: 16, 
+        textAlign: 'center', 
+        color: '#ffffff'  
+    },
+    input: { height: 40, 
+        borderColor: 'gray', 
+        borderWidth: 1, 
+        marginBottom: 10, 
+        paddingLeft: 8,
+        backgroundColor: '#ffffff', 
+        borderRadius: 5
+    },
 });
 
 export default EditListingScreen;

@@ -108,8 +108,9 @@ const CreateListingScreen = () => {
                 onChangeText={setOtherDesiredTitles}
                 placeholder="Enter other desired titles"
             />
-
+            <View style={styles.buttonContainer}>
             <Button title="Finalize Listing" onPress={handleFinalizeListing} />
+            </View>
         </View>
     );
 };
@@ -118,20 +119,33 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#fff',
+        backgroundColor: '#050a30',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     label: {
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 5,
+        color: '#ffffff',
     },
     input: {
         height: 40,
+        width: '80%',
         borderColor: '#ccc',
         borderWidth: 1,
-        marginBottom: 15,
+        marginBottom: 20,
         paddingHorizontal: 10,
-    }
+        backgroundColor: '#ffffff',
+        borderRadius: 5,
+    },
+        buttonContainer: {
+            width: '50%',
+            marginTop: 20,
+            justifyContent: 'center',
+            //alignItems: 'center',
+        },
+    
 });
 
 export default CreateListingScreen;

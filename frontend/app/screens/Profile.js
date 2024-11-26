@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import EditableProfileField from '@/components/EditableProfileField';
 import ChangePasswordButton from '@/components/ChangePasswordButton';
 import { useUser } from './UserContext';
@@ -33,7 +32,6 @@ const ProfileScreen = () => {
           name: data.name,
           university: data.university,
         }));
-        console.log("Updated user state:", user);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -44,28 +42,62 @@ const ProfileScreen = () => {
     }
   }, [user.email]);
 
-  useEffect(() => {
-    console.log("User state updated:", user);
-  }, [user]);
-
-  console.log("Rendering ProfileScreen with user:", user);
-
   return (
-    <View style={styles.container}>
-      <EditableProfileField user={user} header={headers.email} text={user.email} editable={false} />
-      <EditableProfileField user={user} header={headers.name} text={user.name} editable={true} />
-      <EditableProfileField user={user} header={headers.university} text={user.university} editable={true} />
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.header}>Profile</Text>
+      <View style={styles.email}>
+        <EditableProfileField user={user} header={headers.email} text={user.email} editable={false} />
+      </View>
+      <View style={styles.name}>
+        <EditableProfileField user={user} header={headers.name} text={user.name} editable={true} />
+      </View>
+      <View style={styles.university}>  
+        <EditableProfileField user={user} header={headers.university} text={user.university} editable={true} />
+      </View>
       <ChangePasswordButton email={user.email} />
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginTop: 24,
-    marginLeft: 32,
+    flexGrow: 1,
+    padding: 16,
+    backgroundColor: '#050a30',
+  },
+  header: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
+  email: {
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    marginTop: '15%',
+    height: '10%',
+    justifyContent: 'center',
+  },
+  name: {
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    marginTop: '15%',
+    height: '10%',
+    justifyContent: 'center',
+  },
+  university: {
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    marginTop: '15%',
+    height: '10%',
+    justifyContent: 'center',
+    marginBottom: '15%',
+  },
+  ChangePasswordButton: {
+    color: '#ffffff',
+    backgroundColor: '#ca3e47',
+    textAlign: 'center',
+    marginTop: 16,
   },
 });
 
